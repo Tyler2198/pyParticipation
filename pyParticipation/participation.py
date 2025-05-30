@@ -11,7 +11,7 @@ def count_participants(df: pd.DataFrame, id_col: str) -> int:
     Returns:
         int: Total number of unique participants.
     """
-    pass
+    return df[id_col].nunique()
   
 
 def count_measurements(df: pd.DataFrame) -> int:
