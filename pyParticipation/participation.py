@@ -68,15 +68,26 @@ def measurements_per_participant(df: pd.DataFrame, id_col: str, measurement_col:
     return result
 
 
-def measurements_per_wave(df: pd.DataFrame, time_col: str) -> pd.Series:
+def measurements_per_wave(df: pd.DataFrame, time_col: str, measurement_col: str) -> pd.Series:
     """
-    Counts measurements at each wave or measurement occasion.
+    Counts valid (non-missing) measurements at each wave, including waves with 0 valid measurements.
 
     Args:
-        df (pd.DataFrame): DataFrame containing participation data.
-        time_col (str): Column name indicating measurement occasions (waves).
+        df (pd.DataFrame): DataFrame with participation data.
+        time_col (str): Column indicating measurement occasions (e.g., wave).
+        measurement_col (str): Column representing the actual measurement values.
 
     Returns:
-        pd.Series: Count of measurements per wave.
+        pd.Series: Series indexed by wave, with count of valid measurements per wave.
     """
-    pass
+    all_waves = df[time_col].dropna().unique()
+    
+    valid_df = df[df[measurement_col].notna()]
+    
+    counts = valid_df[time_col].value_counts().sort_index()
+
+    full_counts = pd.Series(index=sorted(all_waves), dtype=int)
+    full_counts.update(counts)
+    full_counts = full_counts.fillna(0).astype(int)
+
+    return full_counts
