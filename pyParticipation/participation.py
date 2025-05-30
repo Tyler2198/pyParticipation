@@ -28,18 +28,20 @@ def count_measurements(df: pd.DataFrame, measurement_col: str) -> int:
     return df[measurement_col].notna().sum()
 
 
-def participant_measurement_summary(df: pd.DataFrame, id_col: str) -> pd.Series:
+def participant_measurement_summary(df: pd.DataFrame, id_col: str, measurement_col: str) -> pd.Series:
     """
     Provides distribution summary of measurements per participant.
 
     Args:
         df (pd.DataFrame): DataFrame containing participation data.
         id_col (str): Column name for unique participant IDs.
+        measurement_col (str): Measurement column under consideration.
 
     Returns:
         pd.Series: Summary statistics including mean, median, min, max, and quartiles.
     """
-    pass
+    counts_df = measurements_per_participant(df, id_col, measurement_col)
+    return counts_df['measurement_count'].describe()
 
 
 def measurements_per_participant(df: pd.DataFrame, id_col: str, measurement_col: str) -> pd.DataFrame:
