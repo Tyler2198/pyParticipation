@@ -14,17 +14,18 @@ def count_participants(df: pd.DataFrame, id_col: str) -> int:
     return df[id_col].nunique()
   
 
-def count_measurements(df: pd.DataFrame) -> int:
+def count_measurements(df: pd.DataFrame, measurement_col: str) -> int:
     """
-    Counts total number of measurements.
+    Counts total number of measurements, net of missing values.
 
     Args:
         df (pd.DataFrame): DataFrame containing participation data.
+        measurement_col (str): Measurement column we want to consider to count measurements taken in the longitudinal study.
 
     Returns:
         int: Total number of measurements.
     """
-    pass
+    return df[measurement_col].notna().sum()
 
 
 def participant_measurement_summary(df: pd.DataFrame, id_col: str) -> pd.Series:
