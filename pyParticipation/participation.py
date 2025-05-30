@@ -1,5 +1,7 @@
 ### Participation Summary Functions
 
+import pandas as pd
+
 def count_participants(df: pd.DataFrame, id_col: str) -> int:
     """
     Counts total unique participants.
@@ -68,26 +70,31 @@ def measurements_per_participant(df: pd.DataFrame, id_col: str, measurement_col:
     return result
 
 
-def measurements_per_wave(df: pd.DataFrame, time_col: str, measurement_col: str) -> pd.Series:
+def measurements_per_wave(df: pd.DataFrame, time_col: str, measurement_col: str, include_unscheduled: bool = True) -> pd.Series:
     """
     Counts valid (non-missing) measurements at each wave, including waves with 0 valid measurements.
+    Optionally includes 'UNSCHEDULED' for rows where time_col is missing.
 
     Args:
         df (pd.DataFrame): DataFrame with participation data.
-        time_col (str): Column indicating measurement occasions (e.g., wave).
-        measurement_col (str): Column representing the actual measurement values.
+        time_col (str): Column indicating measurement occasions.
+        measurement_col (str): Column representing actual measurement values.
+        include_unscheduled (bool): Whether to include a separate 'UNSCHEDULED/UNKNOWN' category.
 
     Returns:
-        pd.Series: Series indexed by wave, with count of valid measurements per wave.
+        pd.Series: Series indexed by wave (plus 'UNSCHEDULED/UNKNOWN' if enabled), with count of valid measurements.
     """
-    all_waves = df[time_col].dropna().unique()
-    
     valid_df = df[df[measurement_col].notna()]
-    
-    counts = valid_df[time_col].value_counts().sort_index()
 
-    full_counts = pd.Series(index=sorted(all_waves), dtype=int)
+    scheduled = valid_df[valid_df[time_col].notna()]
+    counts = scheduled.groupby(time_col).size()
+
+    all_waves = df[time_col].dropna().unique()
+    full_counts = pd.Series(data=0, index=sorted(all_waves), dtype=int)
     full_counts.update(counts)
-    full_counts = full_counts.fillna(0).astype(int)
+
+    if include_unscheduled:
+        unsched_count = valid_df[valid_df[time_col].isna()].shape[0]
+        full_counts = pd.concat([full_counts, pd.Series({'UNSCHEDULED/UNKNOWN': unsched_count})])
 
     return full_counts
