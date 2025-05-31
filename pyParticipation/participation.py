@@ -18,14 +18,14 @@ def count_participants(df: pd.DataFrame, id_col: str) -> int:
 
 def count_measurements(df: pd.DataFrame, measurement_col: str) -> int:
     """
-    Counts total number of measurements, net of missing values.
+    Count the number of valid (non-missing) measurements in the dataset.
 
     Args:
-        df (pd.DataFrame): DataFrame containing participation data.
-        measurement_col (str): Measurement column we want to consider to count measurements taken in the longitudinal study.
+        df (pd.DataFrame): Input DataFrame.
+        measurement_col (str): Column name containing measurement values.
 
     Returns:
-        int: Total number of measurements.
+        int: Total number of valid (non-missing) measurements.
     """
     return df[measurement_col].notna().sum()
 
