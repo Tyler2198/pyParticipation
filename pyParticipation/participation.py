@@ -48,15 +48,15 @@ def participant_measurement_summary(df: pd.DataFrame, id_col: str, measurement_c
 
 def measurements_per_participant(df: pd.DataFrame, id_col: str, measurement_col: str) -> pd.DataFrame:
     """
-    Provides the count of measurements per participant.
+    Count valid (non-missing) measurements for each participant, including 0 for those with none.
 
     Args:
-        df (pd.DataFrame): DataFrame containing participation data.
-        id_col (str): Column name for unique participant IDs.
-        measurement_col (str): Measurement column under consideration.
+        df (pd.DataFrame): Input DataFrame.
+        id_col (str): Column name containing participant IDs.
+        measurement_col (str): Column containing measurement values.
 
     Returns:
-        pd.DataFrame: Participant ID and their respective measurement counts.
+        pd.DataFrame: DataFrame with participant IDs and their respective measurement counts.
     """
     all_participants = df[[id_col]].drop_duplicates()
 
