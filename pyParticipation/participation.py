@@ -19,7 +19,6 @@ Author: Denis L. Cascino
 Date: 31-05-2025
 """
 
-
 import pandas as pd
 
 def count_participants(df: pd.DataFrame, id_col: str) -> int:
