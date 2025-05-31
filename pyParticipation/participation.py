@@ -72,17 +72,17 @@ def measurements_per_participant(df: pd.DataFrame, id_col: str, measurement_col:
 
 def measurements_per_wave(df: pd.DataFrame, time_col: str, measurement_col: str, include_unscheduled: bool = True) -> pd.Series:
     """
-    Counts valid (non-missing) measurements at each wave, including waves with 0 valid measurements.
-    Optionally includes 'UNSCHEDULED' for rows where time_col is missing.
+    Count valid (non-missing) measurements per wave/time point, including optional 'UNSCHEDULED'.
 
     Args:
-        df (pd.DataFrame): DataFrame with participation data.
-        time_col (str): Column indicating measurement occasions.
-        measurement_col (str): Column representing actual measurement values.
-        include_unscheduled (bool): Whether to include a separate 'UNSCHEDULED/UNKNOWN' category.
+        df (pd.DataFrame): Input DataFrame.
+        time_col (str): Column representing planned time points (e.g., visit number).
+        measurement_col (str): Column containing measurement values.
+        include_unscheduled (bool, optional): Whether to include a 'UNSCHEDULED/UNKNOWN' category
+            for valid measurements lacking a time point. Defaults to True.
 
     Returns:
-        pd.Series: Series indexed by wave (plus 'UNSCHEDULED/UNKNOWN' if enabled), with count of valid measurements.
+        pd.Series: Series indexed by wave (as strings), with counts of valid measurements.
     """
     valid_df = df[df[measurement_col].notna()]
 
