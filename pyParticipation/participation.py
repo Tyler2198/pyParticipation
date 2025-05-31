@@ -4,11 +4,11 @@ import pandas as pd
 
 def count_participants(df: pd.DataFrame, id_col: str) -> int:
     """
-    Counts total unique participants.
+    Count the number of unique participants in the dataset.
 
     Args:
-        df (pd.DataFrame): DataFrame containing participation data.
-        id_col (str): Column name for unique participant IDs.
+        df (pd.DataFrame): Input DataFrame.
+        id_col (str): Column name containing unique participant identifiers.
 
     Returns:
         int: Total number of unique participants.
