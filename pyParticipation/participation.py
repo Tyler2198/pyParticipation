@@ -1,5 +1,25 @@
 ### Participation Summary Functions
 
+"""
+Participation Summary Module
+-----------------------------
+
+This module provides functions to summarize participation patterns in longitudinal studies.
+It supports clinical datasets (e.g., CDISC ADaM), with utilities to compute:
+
+- Number of participants
+- Number of valid measurements
+- Distribution of measurements per participant
+- Measurement counts per wave or scheduled occasion
+- Inclusion of unscheduled/unknown data
+
+Intended for pre-modeling IDA (Initial Data Analysis) workflows as recommended by STRATOS guidelines.
+
+Author: Denis L. Cascino
+Date: 31-05-2025
+"""
+
+
 import pandas as pd
 
 def count_participants(df: pd.DataFrame, id_col: str) -> int:
