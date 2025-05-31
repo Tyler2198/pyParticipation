@@ -97,4 +97,8 @@ def measurements_per_wave(df: pd.DataFrame, time_col: str, measurement_col: str,
         unsched_count = valid_df[valid_df[time_col].isna()].shape[0]
         full_counts = pd.concat([full_counts, pd.Series({'UNSCHEDULED/UNKNOWN': unsched_count})])
 
+    full_counts.index = full_counts.index.map(
+    lambda x: str(int(x)) if isinstance(x, (int, float)) and x == int(x) else str(x)
+)
+
     return full_counts
