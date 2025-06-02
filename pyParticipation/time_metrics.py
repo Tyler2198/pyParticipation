@@ -2,17 +2,27 @@
 
 def intervals_between_visits(df: pd.DataFrame, id_col: str, actual_time_col: str) -> pd.Series:
     """
-    Computes intervals between consecutive visits for each participant.
+    Computes intervals (in days) between consecutive visits for each participant.
 
     Args:
-        df (pd.DataFrame): DataFrame containing longitudinal data.
-        id_col (str): Participant ID column.
-        actual_time_col (str): Column with actual measurement times (datetime).
+        df (pd.DataFrame): DataFrame with longitudinal data.
+        id_col (str): Column identifying participants.
+        actual_time_col (str): Column with actual datetime of measurements.
 
     Returns:
-        pd.Series: Series of intervals (in days or appropriate unit) between visits.
+        pd.Series: Series of time intervals in days.
     """
-    pass
+    df_sorted = df[[id_col, actual_time_col]].dropna().sort_values([id_col, actual_time_col])
+    df_sorted[actual_time_col] = pd.to_datetime(df_sorted[actual_time_col])
+
+    intervals = (
+        df_sorted.groupby(id_col)[actual_time_col]
+        .diff()
+        .dropna()
+        .dt.days
+    )
+
+    return intervals
 
 
 def interval_summary_statistics(intervals: pd.Series) -> dict:
